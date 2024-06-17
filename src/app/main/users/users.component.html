@@ -1,0 +1,98 @@
+<div class="container-fluid">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h3>Users</h3>
+    </div>
+    <ul class="list-unstyled components">
+      <li *ngFor="let user of users" [class.active]="selectedUser === user" (click)="onSelectUser(user)"><a href="#">{{ user.username }}</a></li>
+    </ul>
+  </nav>
+  <div>
+    <h1 class="text-center">User Registration Form</h1>
+  <div class="container-fluid my-2 w-50">
+    <div class="register-form container">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group m-1">
+          <label for="userId">UserID</label>
+          <input type="text" formControlName="userId" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['userId'].errors }" id="userId" />
+        </div>
+  
+        <div class="form-group m-1">
+          <label for="username">Username</label>
+          <input type="text" formControlName="username" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" id="username" placeholder="John Doe" />
+          <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+            <div *ngIf="f['username'].errors['required']">Username is required</div>
+            <div *ngIf="f['username'].errors['pattern']">Username should contain characters only</div>
+          </div>
+        </div>
+  
+        <div class="form-group m-1">
+          <label for="email">Email</label>
+          <input type="text" formControlName="email" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" id="email" placeholder="john.d@gmail.com" />
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['pattern']">Email is invalid</div>
+          </div>
+        </div>
+  
+        <div formArrayName="addresses">
+          <div *ngFor="let addressGroup of addresses.controls; let i = index" [formGroupName]="i"
+               class="border border-secondary m-1 p-1 border-2 rounded rounded-3">
+            <div class="form-group m-1">
+              <label for="street">Street</label>
+              <input type="text" formControlName="street" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && addressGroup.get('street')?.errors }"
+                     id="street" placeholder="789 Maple St" />
+              <div *ngIf="submitted && addressGroup.get('street')?.errors" class="invalid-feedback">
+                <div *ngIf="addressGroup.get('street')?.errors?.['required']">Street is required</div>
+              </div>
+            </div>
+        
+            <div class="form-group m-1">
+              <label for="city">City</label>
+              <input type="text" formControlName="city" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && addressGroup.get('city')?.errors }"
+                     id="city" placeholder="Capital City" />
+              <div *ngIf="submitted && addressGroup.get('city')?.errors" class="invalid-feedback">
+                <div *ngIf="addressGroup.get('city')?.errors?.['required']">City is required</div>
+              </div>
+            </div>
+        
+            <div class="form-group m-1">
+              <label for="state">State</label>
+              <input type="text" formControlName="state" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && addressGroup.get('state')?.errors }"
+                     id="state" placeholder="Gujarat" />
+              <div *ngIf="submitted && addressGroup.get('state')?.errors" class="invalid-feedback">
+                <div *ngIf="addressGroup.get('state')?.errors?.['required']">State is required</div>
+              </div>
+            </div>
+        
+            <div class="form-group m-1">
+              <label for="zipCode">Zip code</label>
+              <input type="text" formControlName="zipCode" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && addressGroup.get('zipCode')?.errors }"
+                     id="zipCode" placeholder="62703" />
+              <div *ngIf="submitted && addressGroup.get('zipCode')?.errors" class="invalid-feedback">
+                <div *ngIf="addressGroup.get('zipCode')?.errors?.['required']">Zip code is required</div>
+                <div *ngIf="addressGroup.get('zipCode')?.errors?.['pattern']">Please enter a valid 6-digit code</div>
+              </div>
+            </div>
+        
+            <button type="button" class="btn btn-danger m-1" (click)="removeAddress(i)">Remove Address</button>
+          </div>
+        </div>
+          
+        <button type="button" class="btn btn-secondary m-1" (click)="addAddress()">Add Address</button>
+        <div class="form-group d-flex justify-content-between mt-2">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+</div>
